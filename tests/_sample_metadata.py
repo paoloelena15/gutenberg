@@ -54,7 +54,7 @@ class SampleMetaData(object):
         return '' if not self.title else '\n'.join(
             '<http://www.gutenberg.org/ebooks/{etextno}> '
             '<http://purl.org/dc/terms/title> '
-            '"{title}"'
+            '"{title}" '
             '.'
             .format(etextno=self.etextno, title=title)
             for title in self.title)
@@ -62,9 +62,9 @@ class SampleMetaData(object):
     def _rdf_rights(self):
         return '' if not self.rights else '\n'.join(
             '<http://www.gutenberg.org/ebooks/{etextno}> '
-             '<http://purl.org/dc/terms/rights> '
-            '"{rights}"'
-             '.'
+            '<http://purl.org/dc/terms/rights> '
+            '"{rights}" '
+            '.'
             .format(etextno=self.etextno, rights=rights)
             for rights in self.rights)
 
@@ -100,7 +100,7 @@ class SampleMetaData(object):
         return '' if not self.formaturi else '\n'.join(
             '<http://www.gutenberg.org/ebooks/{etextno}> '
             '<http://purl.org/dc/terms/hasFormat> '
-            '<{formaturi}>'
+            '<{formaturi}> '
             '.'
             .format(etextno=self.etextno, formaturi=formaturi)
             for formaturi in self.formaturi)
