@@ -92,6 +92,32 @@ class MetadataCache(with_metaclass(abc.ABCMeta, object)):
             with self._download_metadata_archive() as metadata_archive:
                 for fact in self._iter_metadata_triples(metadata_archive):
                     self.graph.add(fact)
+            self._post_populate()
+
+    def _post_populate(self):
+        """Executes operations necessary to cleanup the data after the cache
+        has been populated.
+
+        """
+        self._remove_phantom_entries()
+
+    def _remove_phantom_entries(self):
+        """Removes phantom entries from the graph. A phantom is an entry that
+        has metadata but that doesn't have any actual book associated with it.
+
+        """
+        self.graph.update('''
+            DELETE { ?s ?p ?o }
+            WHERE {
+              SELECT ?s ?p ?o
+              WHERE {
+                ?s a <http://www.gutenberg.org/2009/pgterms/ebook>.
+                FILTER(NOT EXISTS {
+                  ?s <http://purl.org/dc/terms/hasFormat> ?format.
+                })
+              }
+            }
+        ''')
 
     def _populate_setup(self):
         """Executes operations necessary before the cache can be populated.
