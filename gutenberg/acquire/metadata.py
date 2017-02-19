@@ -90,8 +90,8 @@ class MetadataCache(with_metaclass(abc.ABCMeta, object)):
         self.graph.open(self.cache_uri, create=True)
         with closing(self.graph):
             with self._download_metadata_archive() as metadata_archive:
-                for fact in self._iter_metadata_triples(metadata_archive):
-                    self.graph.add(fact)
+                self.graph.addN((s, p, o, self.graph) for (s, p, o) in
+                                self._iter_metadata_triples(metadata_archive))
             self._post_populate()
 
     def _post_populate(self):
