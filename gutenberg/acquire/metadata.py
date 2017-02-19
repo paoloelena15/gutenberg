@@ -14,6 +14,7 @@ from contextlib import closing
 from contextlib import contextmanager
 
 from rdflib import plugin
+from rdflib.exceptions import Error
 from rdflib.graph import Graph
 from rdflib.store import Store
 from rdflib.term import URIRef
@@ -92,7 +93,8 @@ class MetadataCache(with_metaclass(abc.ABCMeta, object)):
             with self._download_metadata_archive() as metadata_archive:
                 self.graph.addN((s, p, o, self.graph) for (s, p, o) in
                                 self._iter_metadata_triples(metadata_archive))
-            self._post_populate()
+            with self._graph_transaction():
+                self._post_populate()
 
     def _post_populate(self):
         """Executes operations necessary to cleanup the data after the cache
@@ -149,6 +151,19 @@ class MetadataCache(with_metaclass(abc.ABCMeta, object)):
         """
         graph.bind('pgterms', PGTERMS)
         graph.bind('dcterms', DCTERMS)
+
+    @contextmanager
+    def _graph_transaction(self):
+        """Context manager that wraps a block in a transaction that
+        automatically commits on success and rolls back on exception.
+
+        """
+        try:
+            yield
+        except Error:
+            self.graph.rollback()
+        else:
+            self.graph.commit()
 
     @contextmanager
     def _download_metadata_archive(self):
