@@ -112,6 +112,23 @@ class RightsExtractor(_SimplePredicateRelationshipExtractor):
         return Literal(value)
 
 
+class PublisherExtractor(_SimplePredicateRelationshipExtractor):
+    """Extracts the publisher information.
+
+    """
+    @classmethod
+    def feature_name(cls):
+        return 'publisher'
+
+    @classmethod
+    def predicate(cls):
+        return DCTERMS.publisher
+
+    @classmethod
+    def contains(cls, value):
+        return Literal(value)
+
+
 class LanguageExtractor(_SimplePredicateRelationshipExtractor):
     """Extracts the language.
 

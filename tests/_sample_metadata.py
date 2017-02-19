@@ -12,7 +12,7 @@ import sys
 class SampleMetaData(object):
     __uids = {}
 
-    def __init__(self, etextno, authors=None, titles=None, formaturi=None, rights=None, subject=None, language=None, is_phantom=False):
+    def __init__(self, etextno, authors=None, titles=None, formaturi=None, rights=None, subject=None, language=None, publisher=None, is_phantom=False):
         self.author = frozenset(authors or [])
         self.title = frozenset(titles or [])
         self.formaturi = frozenset(formaturi or [])
@@ -22,6 +22,7 @@ class SampleMetaData(object):
         self.rights = frozenset(rights or [])
         self.subject = frozenset(subject or [])
         self.language = frozenset(language or [])
+        self.publisher = frozenset(publisher or [])
         self.is_phantom = is_phantom
 
     @classmethod
@@ -49,6 +50,15 @@ class SampleMetaData(object):
             .format(etextno=self.etextno, author=author,
                     agent=self.__create_uid(author))
             for author in self.author)
+
+    def _rdf_publisher(self):
+        return '' if not self.publisher else '\n'.join(
+            '<http://www.gutenberg.org/ebooks/{etextno}> '
+            '<http://purl.org/dc/terms/publisher> '
+            '"{publisher}" '
+            '.'
+            .format(etextno=self.etextno, publisher=publisher)
+            for publisher in self.publisher)
 
     def _rdf_title(self):
         return '' if not self.title else '\n'.join(

@@ -31,6 +31,9 @@ class TestGetMetadata(MockMetadataMixin, unittest.TestCase):
                     actual=actual,
                     expected=expected))
 
+    def test_get_metadata_publisher(self):
+        self._run_get_metadata_for_feature('publisher')
+
     def test_get_metadata_title(self):
         self._run_get_metadata_for_feature('title')
 
@@ -71,6 +74,9 @@ class TestGetEtexts(MockMetadataMixin, unittest.TestCase):
                             feature=feature,
                             feature_value=feature_value,
                             actual=actual))
+
+    def test_get_etexts_publisher(self):
+        self._run_get_etexts_for_feature('publisher')
 
     def test_get_etexts_title(self):
         self._run_get_etexts_for_feature('title')
