@@ -14,6 +14,7 @@ from gutenberg.acquire.metadata import InvalidCacheException
 from gutenberg.acquire.metadata import SleepycatMetadataCache
 from gutenberg.acquire.metadata import SqliteMetadataCache
 from gutenberg.acquire.metadata import set_metadata_cache
+from gutenberg.query import get_etexts
 from gutenberg.query import get_metadata
 from tests._util import unittest
 
@@ -38,6 +39,14 @@ class MetadataCache(object):
         set_metadata_cache(self.cache)
         title = get_metadata('title', 30929)
         self.assertIn('Het loterijbriefje', title)
+
+    def test_populate_deletes_phantoms(self):
+        self.cache.populate()
+        set_metadata_cache(self.cache)
+        etexts = get_etexts('publisher', 'Project Gutenberg')
+        self.assertIn(23962, etexts)
+        self.assertNotIn(0, etexts)
+        self.assertNotIn(182, etexts)
 
     def test_repopulate(self):
         self.cache.populate()
