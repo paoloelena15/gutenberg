@@ -90,11 +90,18 @@ class MetadataCache(with_metaclass(abc.ABCMeta, object)):
 
         self.graph.open(self.cache_uri, create=True)
         with closing(self.graph):
-            with self._download_metadata_archive() as metadata_archive:
-                self.graph.addN((s, p, o, self.graph) for (s, p, o) in
-                                self._iter_metadata_triples(metadata_archive))
+            with self._graph_transaction():
+                self._insert_triples()
             with self._graph_transaction():
                 self._post_populate()
+
+    def _insert_triples(self):
+        """Adds all the triples from the meta-data archive to the graph
+
+        """
+        with self._download_metadata_archive() as metadata_archive:
+            self.graph.addN((s, p, o, self.graph) for (s, p, o) in
+                            self._iter_metadata_triples(metadata_archive))
 
     def _post_populate(self):
         """Executes operations necessary to cleanup the data after the cache
