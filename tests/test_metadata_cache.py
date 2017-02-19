@@ -18,7 +18,7 @@ from gutenberg.query import get_metadata
 from tests._util import unittest
 
 
-# noinspection PyPep8Naming,PyAttributeOutsideInit
+# noinspection PyPep8Naming,PyAttributeOutsideInit,PyUnresolvedReferences
 class MetadataCache(object):
     def test_read_unpopulated_cache(self):
         set_metadata_cache(self.cache)

@@ -21,7 +21,7 @@ def get_metadata(feature_name, etextno):
     """Looks up the value of a meta-data feature for a given text.
 
     Arguments:
-        feature_name (str): The name of the meta-data to look up.
+        feature_name (str|unicode): The name of the meta-data to look up.
         etextno (int): The identifier of the Gutenberg text for which to look
             up the meta-data.
 
@@ -42,8 +42,9 @@ def get_etexts(feature_name, value):
     """Looks up all the texts that have meta-data matching some criterion.
 
     Arguments:
-        feature_name (str): The meta-data on which to select the texts.
-        value (str): The value of the meta-data on which to filter the texts.
+        feature_name (str|unicode): The meta-data on which to select the texts.
+        value (str|unicode): The value of the meta-data on which to filter the
+            texts.
 
     Returns:
         frozenset: The set of all the Project Gutenberg text identifiers that
