@@ -2,3 +2,7 @@ coverage
 flake8
 nose2
 responses
+jupyterlab
+pandas
+nltk
+sklearn
