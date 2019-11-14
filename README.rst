@@ -80,7 +80,7 @@ To get a Jupyter notebook-enabled Docker, do this:
 
 .. sourcecode :: sh
 
-    docker run -it -p 8888:8888 -v /Users/paolo/Peltarion/peltabooks/data:/data gutenberg bash
+    docker run -it -p 8888:8888 -v /your/local/path/to/data:/data gutenberg bash
 
 and then inside the docker:
 
