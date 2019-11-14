@@ -76,6 +76,19 @@ Alternatively, you can also run the project via Docker:
 
     docker run -it -v /some/mount/path:/data gutenberg python
 
+To get a Jupyter notebook-enabled Docker, do this:
+
+.. sourcecode :: sh
+
+    docker run -it -p 8888:8888 -v /Users/paolo/Peltarion/peltabooks/data:/data gutenberg bash
+
+and then inside the docker:
+
+.. sourcecode :: sh
+
+    jupyter notebook --ip 0.0.0.0 --port 8888 --no-browser --allow-root
+
+
 
 Python 3
 --------
@@ -207,7 +220,6 @@ You can get a full list of the meta-data that can be queried by calling:
 .. sourcecode :: python
 
     from gutenberg.query import list_supported_metadatas
-
     print(list_supported_metadatas()) # prints (u'author', u'formaturi', u'language', ...)
 
 Before you use one of the :code:`gutenberg.query` functions you must populate the
@@ -239,7 +251,6 @@ cache at a custom location, you'd do the following:
     cache = SqliteMetadataCache('/my/custom/location/cache.sqlite')
     cache.populate()
     set_metadata_cache(cache)
-
 
 Limitations
 ===========
